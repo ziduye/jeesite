@@ -10,7 +10,11 @@
 		<result property="dataScope" column="dataScope" />
 		<result property="remarks" column="remarks" />
 		<result property="useable" column="useable" />
-		<result property="sysData" column="sysData" /><!-- 
+		<result property="sysData" column="sysData" />
+		<association property="office" javaType="Office">
+            <id property="id" column="office.id"/>
+            <id property="name" column="office.name"/>
+        </association><!-- 
 		<collection property="userList" ofType="User">
 			<id property="id" column="userList.id" />
 			<id property="loginName" column="userList.loginName" />
@@ -174,7 +178,10 @@
 	<insert id="insertRoleMenu">
 		INSERT INTO sys_role_menu(role_id, menu_id)
 		<foreach collection="menuList" item="menu" separator=" union all ">
-			SELECT #{id}, #{menu.id} FROM dual
+			SELECT #{id}, #{menu.id}
+			<if test="dbName != 'mssql'">
+			FROM dual
+			</if>
 		</foreach>
 	</insert>
 	
@@ -185,7 +192,10 @@
 	<insert id="insertRoleOffice">
 		INSERT INTO sys_role_office(role_id, office_id)
 		<foreach collection="officeList" item="office" separator=" union all ">
-			SELECT #{id}, #{office.id} FROM dual
+			SELECT #{id}, #{office.id}
+			<if test="dbName != 'mssql'">
+			FROM dual
+			</if>
 		</foreach>
 	</insert>
 	
